@@ -1594,6 +1594,13 @@ static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, i
     if (action == GLFW_RELEASE) CORE.Input.Keyboard.currentKeyState[key] = 0;
     else if (action == GLFW_PRESS) CORE.Input.Keyboard.currentKeyState[key] = 1;
     else if (action == GLFW_REPEAT) CORE.Input.Keyboard.keyRepeatInFrame[key] = 1;
+    
+    if(CORE.Input.Keyboard.callback){
+        int rl_action = -1;
+        if (action == GLFW_RELEASE) rl_action = KEY_ACTION_RELEASE;
+        else if (action == GLFW_PRESS) rl_action = KEY_ACTION_PRESS;
+        if (action != -1) CORE.Input.Keyboard.callback(key, rl_action);
+    }
 
     // Check if there is space available in the key queue
     if ((CORE.Input.Keyboard.keyPressedQueueCount < MAX_KEY_PRESSED_QUEUE) && (action == GLFW_PRESS))

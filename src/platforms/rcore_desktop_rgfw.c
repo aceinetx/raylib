@@ -1474,13 +1474,19 @@ void PollInputEvents(void)
 
                     CORE.Input.Keyboard.currentKeyState[key] = 1;
 
+                    if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(key, KEY_ACTION_PRESS);
+
                     if (CORE.Input.Keyboard.currentKeyState[CORE.Input.Keyboard.exitKey]) RGFW_window_setShouldClose(platform.window, true);
                 }
             } break;
             case RGFW_keyReleased:
             {
                 KeyboardKey key = ConvertScancodeToKey(rgfw_event.key.value);
-                if (key != KEY_NULL) CORE.Input.Keyboard.currentKeyState[key] = 0;
+                if (key != KEY_NULL){
+                    CORE.Input.Keyboard.currentKeyState[key] = 0;
+                    if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(key, KEY_ACTION_RELEASE);
+		}
+
             } break;
 
             case RGFW_keyChar:
@@ -1557,6 +1563,8 @@ void PollInputEvents(void)
                     CORE.Input.Mouse.currentPosition.x = mouseX;
                     CORE.Input.Mouse.currentPosition.y = mouseY;
                 }
+
+                if (CORE.Input.Mouse.moveCallback) CORE.Input.Mouse.moveCallback(CORE.Input.Mouse.currentPosition);
 
                 CORE.Input.Touch.position[0] = CORE.Input.Mouse.currentPosition;
                 touchAction = 2;

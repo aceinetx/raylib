@@ -1611,6 +1611,7 @@ void PollInputEvents(void)
                 // Check for registered exit key to request exit game loop on next iteration
                 if (CORE.Input.Keyboard.currentKeyState[CORE.Input.Keyboard.exitKey]) CORE.Window.shouldClose = true;
 
+                if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(key, KEY_ACTION_PRESS);
             } break;
 
             case SDL_KEYUP:
@@ -1622,6 +1623,8 @@ void PollInputEvents(void)
                 KeyboardKey key = ConvertScancodeToKey(event.key.keysym.scancode);
             #endif
                 if (key != KEY_NULL) CORE.Input.Keyboard.currentKeyState[key] = 0;
+
+                if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(key, KEY_ACTION_RELEASE);
             } break;
 
             case SDL_TEXTINPUT:
@@ -1696,8 +1699,10 @@ void PollInputEvents(void)
                     CORE.Input.Mouse.currentPosition.x = (float)event.motion.x;
                     CORE.Input.Mouse.currentPosition.y = (float)event.motion.y;
                 }
+                if (CORE.Input.Mouse.moveCallback) CORE.Input.Mouse.moveCallback(CORE.Input.Mouse.currentPosition);
 
                 CORE.Input.Touch.position[0] = CORE.Input.Mouse.currentPosition;
+
                 touchAction = 2;
             } break;
 

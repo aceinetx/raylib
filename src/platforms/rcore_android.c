@@ -1308,9 +1308,14 @@ static int32_t AndroidInputCallback(struct android_app *app, AInputEvent *event)
 
                 CORE.Input.Keyboard.keyPressedQueue[CORE.Input.Keyboard.keyPressedQueueCount] = key;
                 CORE.Input.Keyboard.keyPressedQueueCount++;
+
+                if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(key, KEY_ACTION_PRESS);
             }
             else if (AKeyEvent_getAction(event) == AKEY_EVENT_ACTION_MULTIPLE) CORE.Input.Keyboard.keyRepeatInFrame[key] = 1;
-            else CORE.Input.Keyboard.currentKeyState[key] = 0;  // Key up
+            else {
+                CORE.Input.Keyboard.currentKeyState[key] = 0;  // Key up
+                if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(key, KEY_ACTION_RELEASE);
+	    }
         }
 
         if (keycode == AKEYCODE_POWER)
@@ -1467,6 +1472,8 @@ static int32_t AndroidInputCallback(struct android_app *app, AInputEvent *event)
     // Map touch[0] as mouse input for convenience
     CORE.Input.Mouse.currentPosition = CORE.Input.Touch.position[0];
     CORE.Input.Mouse.currentWheelMove = (Vector2){ 0.0f, 0.0f };
+
+    if (CORE.Input.Mouse.moveCallback) CORE.Input.Mouse.moveCallback(CORE.Input.Mouse.currentPosition);
 
     return 0;
 }

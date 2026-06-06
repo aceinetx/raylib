@@ -1458,10 +1458,12 @@ static EM_BOOL EmscriptenKeyboardCallback(int eventType, const EmscriptenKeyboar
         case EMSCRIPTEN_EVENT_KEYDOWN:
         {
             CORE.Input.Keyboard.currentKeyState[keyboardEvent->keyCode] = 1;
+            if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(keyboardEvent->keyCode, KEY_ACTION_PRESS);
         } break;
         case EMSCRIPTEN_EVENT_KEYUP:
         {
             CORE.Input.Keyboard.currentKeyState[keyboardEvent->keyCode] = 0;
+            if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(keyboardEvent->keyCode, KEY_ACTION_RELEASE);
         } break;
         default: break;
     }

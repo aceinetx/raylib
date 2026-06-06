@@ -1971,6 +1971,8 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lpara
                 CORE.Input.Mouse.currentPosition.x = (float)GET_X_LPARAM(lparam);
                 CORE.Input.Mouse.currentPosition.y = (float)GET_Y_LPARAM(lparam);
                 CORE.Input.Touch.position[0] = CORE.Input.Mouse.currentPosition;
+
+                if (CORE.Input.Mouse.moveCallback) CORE.Input.Mouse.moveCallback(CORE.Input.Mouse.currentPosition);
             }
         } break;
         case WM_KEYDOWN: HandleKey(wparam, lparam, 1); break;
@@ -2032,6 +2034,7 @@ static void HandleKey(WPARAM wparam, LPARAM lparam, char state)
     if (key != KEY_NULL)
     {
         CORE.Input.Keyboard.currentKeyState[key] = state;
+        if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(key, state == 1 ? KEY_ACTION_PRESS : KEY_ACTION_RELEASE);
 
         if ((key == KEY_ESCAPE) && (state == 1)) CORE.Window.shouldClose = true;
     }
