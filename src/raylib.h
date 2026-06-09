@@ -769,12 +769,14 @@ typedef enum {
 // Key actions
 typedef enum {
     KEY_ACTION_PRESS = 0,
+		KEY_ACTION_REPEAT,
     KEY_ACTION_RELEASE
 } KeyAction;
 
 // Input Callbacks
 typedef void (*KeyboardInputCallback)(int key, int action);
 typedef void (*MouseMoveCallback)(Vector2 pos);
+// typedef void (*MouseMoveCallback)(Vector2 pos);
 
 // Material map index
 typedef enum {

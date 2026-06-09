@@ -1311,11 +1311,16 @@ static int32_t AndroidInputCallback(struct android_app *app, AInputEvent *event)
 
                 if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(key, KEY_ACTION_PRESS);
             }
-            else if (AKeyEvent_getAction(event) == AKEY_EVENT_ACTION_MULTIPLE) CORE.Input.Keyboard.keyRepeatInFrame[key] = 1;
-            else {
+            else if (AKeyEvent_getAction(event) == AKEY_EVENT_ACTION_MULTIPLE)
+            {
+                CORE.Input.Keyboard.keyRepeatInFrame[key] = 1;
+                if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(key, KEY_ACTION_REPEAT);
+            }
+            else 
+            {
                 CORE.Input.Keyboard.currentKeyState[key] = 0;  // Key up
                 if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(key, KEY_ACTION_RELEASE);
-	    }
+            }
         }
 
         if (keycode == AKEYCODE_POWER)

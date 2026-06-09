@@ -2053,10 +2053,12 @@ static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, i
     else if (action == GLFW_PRESS) CORE.Input.Keyboard.currentKeyState[key] = 1;
     else if (action == GLFW_REPEAT) CORE.Input.Keyboard.keyRepeatInFrame[key] = 1;
     
-    if(CORE.Input.Keyboard.callback){
+    if (CORE.Input.Keyboard.callback)
+    {
         int rl_action = 0;
-        if(action == GLFW_RELEASE) rl_action = KEY_ACTION_RELEASE;
-        else if(action == GLFW_PRESS) rl_action = KEY_ACTION_PRESS;
+        if (action == GLFW_RELEASE) rl_action = KEY_ACTION_RELEASE;
+        else if (action == GLFW_REPEAT) rl_action = KEY_ACTION_REPEAT;
+        else if (action == GLFW_PRESS) rl_action = KEY_ACTION_PRESS;
         CORE.Input.Keyboard.callback(key, rl_action);
     }
 

@@ -1606,12 +1606,18 @@ void PollInputEvents(void)
                     CORE.Input.Keyboard.currentKeyState[key] = 1;
                 }
 
-                if (event.key.repeat) CORE.Input.Keyboard.keyRepeatInFrame[key] = 1;
+                if (event.key.repeat)
+                {
+                    CORE.Input.Keyboard.keyRepeatInFrame[key] = 1;
+                    if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(key, KEY_ACTION_REPEAT);
+                } 
+                else 
+                {
+                    if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(key, KEY_ACTION_PRESS);
+                }
 
                 // Check for registered exit key to request exit game loop on next iteration
                 if (CORE.Input.Keyboard.currentKeyState[CORE.Input.Keyboard.exitKey]) CORE.Window.shouldClose = true;
-
-                if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(key, KEY_ACTION_PRESS);
             } break;
 
             case SDL_KEYUP:

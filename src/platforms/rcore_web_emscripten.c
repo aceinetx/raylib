@@ -1453,7 +1453,11 @@ static EM_BOOL EmscriptenKeyboardCallback(int eventType, const EmscriptenKeyboar
     {
         case EMSCRIPTEN_EVENT_KEYPRESS:
         {
-            if (keyboardEvent->repeat) CORE.Input.Keyboard.keyRepeatInFrame[keyboardEvent->keyCode] = 1;
+            if (keyboardEvent->repeat)
+            {
+                CORE.Input.Keyboard.keyRepeatInFrame[keyboardEvent->keyCode] = 1;
+                if (CORE.Input.Keyboard.callback) CORE.Input.Keyboard.callback(keyboardEvent->keyCode, KEY_ACTION_REPEAT);
+            }
         } break;
         case EMSCRIPTEN_EVENT_KEYDOWN:
         {
