@@ -14,6 +14,7 @@
 ********************************************************************************************/
 
 #include "raylib.h"
+#include <stdio.h>
 
 int key = 0, action = 0;
 Vector2 mousePos = {0};
@@ -23,8 +24,16 @@ void KeyCallback(int key_, int action_){
     action = action_;
 }
 
-void MouseMotionCallback(Vector2 pos){
+void MouseMoveCallback(Vector2 pos){
     mousePos = pos;
+}
+
+void MouseButtonCallback(int button, int action_){
+    key = button;
+    action = action_;
+    if(button == MOUSE_BUTTON_LEFT){
+        puts("left");
+    }
 }
 
 //------------------------------------------------------------------------------------
@@ -44,7 +53,8 @@ int main(void)
     
     // Setup input
     SetKeyboardInputCallback(KeyCallback);
-    SetMouseMoveCallback(MouseMotionCallback);
+    SetMouseMoveCallback(MouseMoveCallback);
+    SetMouseButtonCallback(MouseButtonCallback);
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key

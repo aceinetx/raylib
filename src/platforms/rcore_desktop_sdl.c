@@ -1667,6 +1667,8 @@ void PollInputEvents(void)
                 CORE.Input.Mouse.currentButtonState[btn] = 1;
                 CORE.Input.Touch.currentTouchState[btn] = 1;
 
+                if (CORE.Input.Mouse.buttonCallback) CORE.Input.Mouse.buttonCallback(btn, MOUSE_BUTTON_ACTION_PRESS);
+
                 touchAction = 1;
             } break;
             case SDL_MOUSEBUTTONUP:
@@ -1679,6 +1681,8 @@ void PollInputEvents(void)
 
                 CORE.Input.Mouse.currentButtonState[btn] = 0;
                 CORE.Input.Touch.currentTouchState[btn] = 0;
+
+                if (CORE.Input.Mouse.buttonCallback) CORE.Input.Mouse.buttonCallback(btn, MOUSE_BUTTON_ACTION_RELEASE);
 
                 touchAction = 0;
             } break;

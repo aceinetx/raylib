@@ -1517,6 +1517,8 @@ void PollInputEvents(void)
                 CORE.Input.Mouse.currentButtonState[btn - 1] = 1;
                 CORE.Input.Touch.currentTouchState[btn - 1] = 1;
 
+                if(CORE.Input.Mouse.buttonCallback) CORE.Input.Mouse.buttonCallback(btn - 1, MOUSE_BUTTON_ACTION_PRESS);
+
                 touchAction = 1;
             } break;
             case RGFW_mouseButtonReleased:
@@ -1528,6 +1530,8 @@ void PollInputEvents(void)
 
                 CORE.Input.Mouse.currentButtonState[btn - 1] = 0;
                 CORE.Input.Touch.currentTouchState[btn - 1] = 0;
+
+                if(CORE.Input.Mouse.buttonCallback) CORE.Input.Mouse.buttonCallback(btn - 1, MOUSE_BUTTON_ACTION_RELEASE);
 
                 touchAction = 0;
             } break;

@@ -769,14 +769,20 @@ typedef enum {
 // Key actions
 typedef enum {
     KEY_ACTION_PRESS = 0,
-		KEY_ACTION_REPEAT,
+	KEY_ACTION_REPEAT,
     KEY_ACTION_RELEASE
 } KeyAction;
 
+typedef enum {
+    MOUSE_BUTTON_ACTION_PRESS = 0,
+	MOUSE_BUTTON_ACTION_REPEAT,
+    MOUSE_BUTTON_ACTION_RELEASE
+} MouseButtonAction;
+
 // Input Callbacks
-typedef void (*KeyboardInputCallback)(int key, int action);
-typedef void (*MouseMoveCallback)(Vector2 pos);
-// typedef void (*MouseMoveCallback)(Vector2 pos);
+typedef void (*KeyboardInputCallback_t)(int key, int action);
+typedef void (*MouseMoveCallback_t)(Vector2 pos);
+typedef void (*MouseButtonCallback_t)(int key, int action);
 
 // Material map index
 typedef enum {
@@ -1218,7 +1224,7 @@ RLAPI int GetKeyPressed(void);                                // Get key pressed
 RLAPI int GetCharPressed(void);                               // Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
 RLAPI const char *GetKeyName(int key);                        // Get name of a QWERTY key on the current keyboard layout (eg returns string 'q' for KEY_A on an AZERTY keyboard)
 RLAPI void SetExitKey(int key);                               // Set a custom key to exit program (default is ESC)
-RLAPI void SetKeyboardInputCallback(KeyboardInputCallback callback);
+RLAPI void SetKeyboardInputCallback(KeyboardInputCallback_t callback);
 
 // Input-related functions: gamepads
 RLAPI bool IsGamepadAvailable(int gamepad);                   // Check if a gamepad is available
@@ -1248,7 +1254,8 @@ RLAPI void SetMouseScale(float scaleX, float scaleY);         // Set mouse scali
 RLAPI float GetMouseWheelMove(void);                          // Get mouse wheel movement for X or Y, whichever is larger
 RLAPI Vector2 GetMouseWheelMoveV(void);                       // Get mouse wheel movement for both X and Y
 RLAPI void SetMouseCursor(int cursor);                        // Set mouse cursor
-RLAPI void SetMouseMoveCallback(MouseMoveCallback callback);
+RLAPI void SetMouseMoveCallback(MouseMoveCallback_t callback);
+RLAPI void SetMouseButtonCallback(MouseButtonCallback_t callback);
 
 // Input-related functions: touch
 RLAPI int GetTouchX(void);                                    // Get touch position X for touch point 0 (relative to screen size)

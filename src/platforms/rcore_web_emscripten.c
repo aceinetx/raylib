@@ -1509,17 +1509,41 @@ static EM_BOOL EmscriptenMouseCallback(int eventType, const EmscriptenMouseEvent
         case EMSCRIPTEN_EVENT_MOUSEDOWN:
         {
             // NOTE: Emscripten and raylib buttons indices are not aligned
-            if (mouseEvent->button == 0) CORE.Input.Mouse.currentButtonState[MOUSE_BUTTON_LEFT] = 1;
-            else if (mouseEvent->button == 1) CORE.Input.Mouse.currentButtonState[MOUSE_BUTTON_MIDDLE] = 1;
-            else if (mouseEvent->button == 2) CORE.Input.Mouse.currentButtonState[MOUSE_BUTTON_RIGHT] = 1;
+            if (mouseEvent->button == 0) 
+            {
+                if (CORE.Input.Mouse.buttonCallback) CORE.Input.Mouse.buttonCallback(MOUSE_BUTTON_LEFT, MOUSE_BUTTON_ACTION_PRESS);
+                CORE.Input.Mouse.currentButtonState[MOUSE_BUTTON_LEFT] = 1;
+            }
+            else if (mouseEvent->button == 1) 
+            {
+                if (CORE.Input.Mouse.buttonCallback) CORE.Input.Mouse.buttonCallback(MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_ACTION_PRESS);
+                CORE.Input.Mouse.currentButtonState[MOUSE_BUTTON_MIDDLE] = 1;
+            }
+            else if (mouseEvent->button == 2)
+            {
+                if (CORE.Input.Mouse.buttonCallback) CORE.Input.Mouse.buttonCallback(MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_ACTION_PRESS);
+                CORE.Input.Mouse.currentButtonState[MOUSE_BUTTON_RIGHT] = 1;
+            }
 
             //CORE.Input.Touch.currentTouchState[button] = action;
         } break;
         case EMSCRIPTEN_EVENT_MOUSEUP:
         {
-            if (mouseEvent->button == 0) CORE.Input.Mouse.currentButtonState[MOUSE_BUTTON_LEFT] = 0;
-            else if (mouseEvent->button == 1) CORE.Input.Mouse.currentButtonState[MOUSE_BUTTON_MIDDLE] = 0;
-            else if (mouseEvent->button == 2) CORE.Input.Mouse.currentButtonState[MOUSE_BUTTON_RIGHT] = 0;
+            if (mouseEvent->button == 0)
+            {
+                if (CORE.Input.Mouse.buttonCallback) CORE.Input.Mouse.buttonCallback(MOUSE_BUTTON_LEFT, MOUSE_BUTTON_ACTION_RELEASE);
+                CORE.Input.Mouse.currentButtonState[MOUSE_BUTTON_LEFT] = 0;
+            }
+            else if (mouseEvent->button == 1)
+            {
+                if (CORE.Input.Mouse.buttonCallback) CORE.Input.Mouse.buttonCallback(MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_ACTION_RELEASE);
+                CORE.Input.Mouse.currentButtonState[MOUSE_BUTTON_MIDDLE] = 0;
+            }
+            else if (mouseEvent->button == 2)
+            {
+                if (CORE.Input.Mouse.buttonCallback) CORE.Input.Mouse.buttonCallback(MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_ACTION_RELEASE);
+                CORE.Input.Mouse.currentButtonState[MOUSE_BUTTON_RIGHT] = 0;
+            }
         } break;
         default: break;
     }

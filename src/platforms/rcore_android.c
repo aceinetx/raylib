@@ -1467,8 +1467,18 @@ static int32_t AndroidInputCallback(struct android_app *app, AInputEvent *event)
     // When all touchpoints are tapped and released really quickly, this event is generated
     if (flags == AMOTION_EVENT_ACTION_CANCEL) CORE.Input.Touch.pointCount = 0;
 
-    if (CORE.Input.Touch.pointCount > 0) CORE.Input.Touch.currentTouchState[MOUSE_BUTTON_LEFT] = 1;
-    else CORE.Input.Touch.currentTouchState[MOUSE_BUTTON_LEFT] = 0;
+    if (CORE.Input.Touch.pointCount > 0)
+    {
+        CORE.Input.Touch.currentTouchState[MOUSE_BUTTON_LEFT] = 1;
+
+        if (CORE.Input.Mouse.buttonCallback) CORE.Input.Mouse.buttonCallback(MOUSE_BUTTON_LEFT, MOUSE_BUTTON_ACTION_PRESS);
+    }
+    else 
+    {
+        CORE.Input.Touch.currentTouchState[MOUSE_BUTTON_LEFT] = 0;
+
+        if (CORE.Input.Mouse.buttonCallback) CORE.Input.Mouse.buttonCallback(MOUSE_BUTTON_LEFT, MOUSE_BUTTON_ACTION_RELEASE);
+    }
 
     // Stores the previous position of touch[0] only while it's active to calculate the delta
     if (flags == AMOTION_EVENT_ACTION_MOVE) CORE.Input.Mouse.previousPosition = CORE.Input.Mouse.currentPosition;

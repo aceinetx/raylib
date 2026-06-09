@@ -2103,6 +2103,15 @@ static void MouseButtonCallback(GLFWwindow *window, int button, int action, int 
     CORE.Input.Mouse.currentButtonState[button] = action;
     CORE.Input.Touch.currentTouchState[button] = action;
 
+    if (CORE.Input.Mouse.buttonCallback)
+    {
+        int rl_action = 0;
+        if (action == GLFW_PRESS) rl_action = MOUSE_BUTTON_ACTION_PRESS;
+        else if (action == GLFW_REPEAT) rl_action = MOUSE_BUTTON_ACTION_REPEAT;
+        else if (action == GLFW_RELEASE) rl_action = MOUSE_BUTTON_ACTION_RELEASE;
+        CORE.Input.Mouse.buttonCallback(button, rl_action);
+    }
+
 #if SUPPORT_GESTURES_SYSTEM && SUPPORT_MOUSE_GESTURES
     // Process mouse events as touches to be able to use mouse-gestures
     GestureEvent gestureEvent = { 0 };

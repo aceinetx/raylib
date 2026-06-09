@@ -2049,6 +2049,8 @@ static void HandleMouseButton(int button, char state)
     // Register current mouse button state
     CORE.Input.Mouse.currentButtonState[button] = state;
     CORE.Input.Touch.currentTouchState[button] = state;
+
+    if (CORE.Input.Mouse.buttonCallback) CORE.Input.Mouse.buttonCallback(button, state == 1 ? MOUSE_BUTTON_ACTION_PRESS : MOUSE_BUTTON_ACTION_RELEASE);
 }
 
 // Handle raw input event

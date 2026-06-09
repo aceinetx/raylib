@@ -339,7 +339,7 @@ typedef struct CoreData {
             int charPressedQueue[MAX_CHAR_PRESSED_QUEUE]; // Input characters queue (unicode)
             int charPressedQueueCount;      // Input characters queue count
 
-            KeyboardInputCallback callback;
+            KeyboardInputCallback_t callback;
         } Keyboard;
         struct {
             Vector2 offset;                 // Mouse offset
@@ -358,7 +358,9 @@ typedef struct CoreData {
             Vector2 currentWheelMove;       // Registers current mouse wheel variation
             Vector2 previousWheelMove;      // Registers previous mouse wheel variation
 
-            MouseMoveCallback moveCallback;
+            MouseMoveCallback_t moveCallback;
+            MouseButtonCallback_t buttonCallback;
+
         } Mouse;
         struct {
             int pointCount;                                 // Number of touch points active
@@ -3905,7 +3907,7 @@ void SetExitKey(int key)
 }
 
 // Set a custom key input callback without changing the internal callbacks
-void SetKeyboardInputCallback(KeyboardInputCallback callback)
+void SetKeyboardInputCallback(KeyboardInputCallback_t callback)
 {
     CORE.Input.Keyboard.callback = callback;
 }
@@ -4022,8 +4024,12 @@ float GetGamepadAxisMovement(int gamepad, int axis)
 //void SetMousePosition(int x, int y)
 //void SetMouseCursor(int cursor)
 
-void SetMouseMoveCallback(MouseMoveCallback callback){
+void SetMouseMoveCallback(MouseMoveCallback_t callback){
 	CORE.Input.Mouse.moveCallback = callback;
+}
+
+void SetMouseButtonCallback(MouseButtonCallback_t callback){
+	CORE.Input.Mouse.buttonCallback = callback;
 }
 
 // Check if a mouse button has been pressed once
